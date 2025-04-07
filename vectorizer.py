@@ -1,6 +1,6 @@
 from langchain.text_splitter import CharacterTextSplitter
 from langchain.vectorstores import FAISS
-from langchain.embeddings.openai import OpenAIEmbeddings
+from langchain_openai import OpenAIEmbeddings
 
 def vectorize_documents(documents):
     splitter = CharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
