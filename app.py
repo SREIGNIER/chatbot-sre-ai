@@ -1,20 +1,24 @@
 import streamlit as st
 from loader import load_documents
 from vectorizer import vectorize_documents
-from chatbot import ask_question
 
-st.set_page_config(page_title="SRE AI", page_icon="🤖")
-st.markdown("<style>body {background-color: black; color: white;}</style>", unsafe_allow_html=True)
+st.set_page_config(page_title="SRE AI – Assistant Méthodologique", page_icon="🤖")
+
 st.title("🤖 SRE AI – Assistant Méthodologique")
 
 if "vectorstore" not in st.session_state:
-    with st.spinner("Chargement de la base de documents..."):
-        docs = load_documents("docs")
+    with st.spinner("Chargement de la base de connaissances..."):
+        docs = load_documents("docs")  # Charge tous les fichiers PDF/DOCX du dossier /docs
         st.session_state.vectorstore = vectorize_documents(docs)
 
-question = st.text_input("Pose ta question 👇")
+question = st.text_input("Pose ta question sur une méthodologie SRE 👇")
 
 if question:
-    with st.spinner("Recherche en cours..."):
-        reponse = ask_question(question, st.session_state.vectorstore)
-        st.markdown(f"**Réponse :** {reponse}")
+    if st.session_state.vectorstore:
+        docs = st.session_state.vectorstore.similarity_search(question, k=2)
+        answer = docs[0].page_content if docs else "Je n'ai pas trouvé d'information."
+    else:
+        answer = "La base vectorielle n'est pas disponible."
+
+    st.markdown("### Réponse :")
+    st.write(answer)
