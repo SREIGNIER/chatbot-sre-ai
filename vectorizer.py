@@ -1,18 +1,16 @@
 from langchain.text_splitter import CharacterTextSplitter
 from langchain.vectorstores import FAISS
 from langchain.embeddings import OpenAIEmbeddings
-import os
+import streamlit as st
 
-def vectorize_documents(documents):
-    # Découpe les documents en morceaux de 1000 caractères avec un chevauchement de 100
+def vectorize_documents(docs):
+    # Découpe les documents en morceaux
     text_splitter = CharacterTextSplitter(chunk_size=1000, chunk_overlap=100)
-    chunks = text_splitter.split_documents(documents)
+    chunks = text_splitter.split_documents(docs)
 
-    # Récupère la clé OpenAI depuis les secrets (via Streamlit Cloud)
-    openai_key = os.environ["OPENAI_API_KEY"]
-    embeddings = OpenAIEmbeddings(openai_api_key=openai_key)
+    # Utilise la clé OpenAI sécurisée via streamlit
+    embeddings = OpenAIEmbeddings(openai_api_key=st.secrets["OPENAI_API_KEY"])
 
-    # Création de la base vectorielle
+    # Crée l’index vectoriel
     db = FAISS.from_documents(chunks, embeddings)
-
     return db
