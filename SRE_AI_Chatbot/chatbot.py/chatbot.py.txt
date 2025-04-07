@@ -1,9 +1,0 @@
-from langchain.chains import RetrievalQA
-from langchain.llms import OpenAI
-
-def ask_question(question, vectorstore):
-    qa = RetrievalQA.from_chain_type(
-        llm=OpenAI(temperature=0),
-        retriever=vectorstore.as_retriever()
-    )
-    return qa.run(question)
