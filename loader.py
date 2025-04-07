@@ -1,5 +1,5 @@
 import os
-from langchain.document_loaders import PyPDFLoader, Docx2txtLoader, TextLoader
+from langchain_community.document_loaders import PyPDFLoader, Docx2txtLoader, TextLoader
 
 def load_documents(path="docs"):
     documents = []
