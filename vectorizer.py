@@ -4,11 +4,16 @@ from langchain.embeddings import OpenAIEmbeddings
 import streamlit as st
 
 def vectorize_documents(docs):
+    # Vérifie que la clé API est présente
+    if "OPENAI_API_KEY" not in st.secrets:
+        st.error("❌ Clé API OpenAI manquante dans les secrets Streamlit.")
+        return None
+
     # Découpe les documents en morceaux
     text_splitter = CharacterTextSplitter(chunk_size=1000, chunk_overlap=100)
     chunks = text_splitter.split_documents(docs)
 
-    # Utilise la clé OpenAI sécurisée via streamlit
+    # Initialise les embeddings avec la clé sécurisée
     embeddings = OpenAIEmbeddings(openai_api_key=st.secrets["OPENAI_API_KEY"])
 
     # Crée l’index vectoriel
