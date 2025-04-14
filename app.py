@@ -4,6 +4,10 @@ from datetime import datetime
 from chatbot import vectorize_documents, get_chain_from_docs
 from langchain_community.vectorstores import FAISS
 from langchain_community.embeddings import OllamaEmbeddings
+from loader import download_docs_from_github  # <--- Ajouté ici
+
+# --- Étape 1 : Télécharger les documents depuis GitHub ---
+download_docs_from_github()
 
 # Chemins
 DOCS_PATH = "docs"
